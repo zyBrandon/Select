@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>demo</title>
+    <style>
+        ul {
+
+            margin-top: 0px;
+
+            padding-left: 0px;
+
+        }
+
+        li {
+
+            padding: 0px;
+
+            list-style: none;
+
+            height: 35px;
+
+            line-height: 35px;
+
+            display: block;
+
+            border-bottom: 1px solid #DDD;
+
+        }
+
+        li:hover {
+
+            background-color: #DDD;
+
+        }
+    </style>
+
+
+</head>
+
+<body>
+    <input type="text" id="txtExma" style="width: 200px; margin: 0 auto;" name="name" value="" oninput="my_div(this)" />
+
+    <script>
+        var global_qymc = new Array();
+
+        for (var i = 0; i < 20; i++) {
+
+            global_qymc.push("ddsds" + i);//模拟数据源
+
+        }
+
+        var objinput;
+
+        function itemClick(o) {
+
+            var data = $.trim($(o).text());
+
+            $(objinput).val(data);
+
+            $(".createDIv").each(function () {
+
+                $(this).hide();
+
+            });
+
+        }
+
+        function my_div(o) {
+
+            objinput = o;
+
+            var absoluteP = o.getBoundingClientRect();
+
+            var o_l = absoluteP.left, o_t = absoluteP.top, o_w = $(o).width();
+
+            var t_value = $(o).val().trim();
+
+            var c_div = document.createElement("div");
+
+            c_div.style.cssText = "position:absolute;width:" + (o_w + 4) + "px;height:60%;top:" + (o_t + 22) + "px;left:" + o_l + "px;border:0px solid #ccc;overflow-y:auto;overflow-x:hidden;background-color:white;";
+
+            c_div.className = "createDIv";
+
+            var html = "";
+
+            var newArray = new Array();
+
+            for (var i = 0; i < global_qymc.length; i++) {
+
+                var arr_vla = new Array();
+
+                var k = 0;
+
+                while (k < t_value.length) {
+
+                    var s = "";
+
+                    while (t_value.charCodeAt(k) < 256) {
+
+                        s = s + t_value.charAt(k);
+
+                        k++;
+
+                        break;
+
+                    }
+
+                    if (s != "") {
+
+                        arr_vla.push(s);
+
+                    }
+
+                    var s = "";
+
+                    while (t_value.charCodeAt(k) > 256) {
+
+                        s = s + t_value.charAt(k);
+
+                        k++;
+
+                        break;
+
+                    }
+
+                    if (s != "") {
+
+                        arr_vla.push(s);
+
+                    }
+
+                }
+
+                var isTure = false;
+
+                for (var s = 0; s < arr_vla.length; s++) {
+
+                    if (global_qymc[i].indexOf(arr_vla[s]) != -1) {
+
+                        isTure = true;
+
+                    } else {
+
+                        isTure = false;
+
+                        break;
+
+                    }
+
+                }
+
+                if (isTure) {
+
+                    newArray.push(global_qymc[i]);
+
+                }
+
+            }
+
+            if (newArray == null) {
+
+                for (var i = 0; i < global_qymc.length; i++) {
+
+                    html += "<li style='width:100%;' class='liitem' onclick='itemClick(this)'>&nbsp;&nbsp;" + global_qymc[i] + "</li>";
+
+                }
+
+            } else {
+
+                if (newArray.length != 0) {
+
+                    for (var i = 0; i < newArray.length; i++) {
+
+                        html += "<li style='width:100%;' class='liitem' onclick='itemClick(this)'>&nbsp;&nbsp;" + newArray[i] + "</li>";
+
+                    }
+
+                } else {
+
+                    for (var i = 0; i < global_qymc.length; i++) {
+
+                        html += "<li style='width:100%;' class='liitem' onclick='itemClick(this)'>&nbsp;&nbsp;" + global_qymc[i] + "</li>";
+
+                    }
+
+                }
+
+            }
+
+            c_div.innerHTML = "<ul>" + html + "</ui>";
+
+            $("body").append(c_div);
+
+        }
+    </script>
+</body>
+
+</html>
